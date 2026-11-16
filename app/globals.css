@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--scroll: 0;
+	--progress: 0;
+}
+
+/* Scroll progress bar (driven by Lenis) */
+.progress {
+	transform-origin: 0 50%;
+	transform: scaleX(var(--progress));
+}
+
+/* Reveal variants. Elements start hidden only when JS is running. */
+.js [data-reveal] {
+	transition:
+		opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+		transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+		clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+	transition-delay: var(--d, 0ms);
+}
+.js [data-reveal="up"] {
+	opacity: 0;
+	transform: translateY(32px);
+}
+.js [data-reveal="wipe"] {
+	clip-path: inset(0 0 100% 0);
+}
+.js [data-reveal="line"] {
+	display: block;
+	overflow: hidden;
+}
+.js [data-reveal="line"] > span {
+	display: block;
+	transform: translateY(105%);
+	transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+	transition-delay: var(--d, 0ms);
+}
+.js [data-reveal].in {
+	opacity: 1;
+	transform: none;
+	clip-path: inset(0);
+}
+.js [data-reveal="line"].in > span {
+	transform: none;
+}
+
+.mandala {
+	transform: rotate(calc(var(--scroll) * 0.06deg));
+	will-change: transform;
+}
+.mandala-rev {
+	transform: rotate(calc(var(--scroll) * -0.09deg));
+	will-change: transform;
+}
+
+:focus-visible {
+	outline: 3px solid theme("colors.marigold");
+	outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mandala,
+	.mandala-rev {
+		transform: none;
+	}
+	.marquee-track {
+		animation: none !important;
+	}
+}
+
+@keyframes marquee {
+	to {
+		transform: translateX(-50%);
+	}
+}
+.marquee-track {
+	animation: marquee 32s linear infinite;
+}
+
+/* width */
+::-webkit-scrollbar {
+	width: 0;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
